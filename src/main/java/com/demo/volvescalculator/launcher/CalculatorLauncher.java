@@ -1,9 +1,8 @@
 package com.demo.volvescalculator.launcher;
 
 import com.demo.volvescalculator.serivce.ResponseService;
-import com.demo.volvescalculator.serivce.WordService;
-import com.demo.volvescalculator.utils.FileReader;
-import com.demo.volvescalculator.utils.FileWriter;
+import com.demo.volvescalculator.serivce.FileReader;
+import com.demo.volvescalculator.serivce.FileWriter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -16,22 +15,18 @@ import java.util.*;
 @RequiredArgsConstructor
 public class CalculatorLauncher implements CommandLineRunner {
 
-    private static final String INPUT_FILE = "input.txt";
-
-    private final WordService wordService;
     private final ResponseService responseService;
     private final FileWriter fileWriter;
+    private final FileReader fileReader;
 
     @Override
     public void run(String... args) {
 
         log.info("Starting the application... ");
 
-        List<String> linesBuffer = FileReader.readLinesFromFile(INPUT_FILE);
+        List<String> linesBuffer = fileReader.readLinesFromFile();
 
-        String[] words = wordService.getWordsArray(linesBuffer.toString());
-
-        List<String> responseList = responseService.getResponseList(words);
+        List<String> responseList = responseService.getProcessedResponse(linesBuffer.toString());
 
         logResponsesToConsole(responseList);
 

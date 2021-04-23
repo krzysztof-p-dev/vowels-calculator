@@ -7,7 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 class VolvesCalculatorApplicationTests {
 
     @Test
-    void contextLoads() {
+    void shouldThrowCalculatorException() {
+
     }
 
 }

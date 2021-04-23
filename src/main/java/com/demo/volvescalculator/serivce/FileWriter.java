@@ -1,4 +1,4 @@
-package com.demo.volvescalculator.utils;
+package com.demo.volvescalculator.serivce;
 
 import com.demo.volvescalculator.exception.CalculatorErrorMessage;
 import com.demo.volvescalculator.exception.CalculatorException;
@@ -19,8 +19,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FileWriter {
 
+    private final String outputDirectory;
+
     private static final String FILE_NAME = "output.txt";
-    private static final Path PATH = Paths.get(FILE_NAME);
 
     public void createNewOutputFile(List<String> lines) {
         deleteFileIfExists();
@@ -29,20 +30,20 @@ public class FileWriter {
 
     private void writeFile(List<String> lines) {
         try {
-            Path filePath = Files.write(PATH,
+            Path filePath = Files.write(Paths.get(outputDirectory, FILE_NAME),
                     lines,
                     StandardCharsets.UTF_8,
                     StandardOpenOption.CREATE,
                     StandardOpenOption.APPEND);
             log.info("File saved to: " + filePath.toAbsolutePath());
         } catch (IOException ioException) {
-            throw new CalculatorException(CalculatorErrorMessage.CANNOT_WRITE_FILE, FILE_NAME);
+            throw new CalculatorException(CalculatorErrorMessage.CANNOT_WRITE_FILE, Paths.get(outputDirectory, FILE_NAME));
         }
     }
 
     private void deleteFileIfExists() {
         try {
-            Files.deleteIfExists(PATH);
+            Files.deleteIfExists(Paths.get(outputDirectory, FILE_NAME));
         } catch (IOException e) {
             throw new CalculatorException(CalculatorErrorMessage.CANNOT_DELETE_FILE, FILE_NAME);
         }
